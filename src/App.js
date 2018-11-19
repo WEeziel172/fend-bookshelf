@@ -1,7 +1,7 @@
 import React from 'react'
 import Bookshelf from './bookshelf.js'
 import * as BooksApi from './BooksAPI.js'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -30,16 +30,17 @@ export default class BooksApp extends React.Component {
 
 update_books(){
     BooksApi.getAll().then((books) => {
+      this.setState({ books })
 
   
         const filtered_read = books.filter(function(value) { 
-          return value.shelf == "read"
+          return value.shelf === "read"
        });
        const filtered_reading = books.filter(function(value) { 
         return value.shelf === "currentlyReading"
         });
         const filtered_wantRead = books.filter(function(value) { 
-        return value.shelf == "wantToRead"
+        return value.shelf === "wantToRead"
         });
       
        this.setState({ 
@@ -57,15 +58,14 @@ changeShelf(passedValue, id) {
     console.log(passedValue + id);
 
     BooksApi.get(id).then((book) => {
-        BooksApi.update(book, passedValue)})
- 
+      BooksApi.update(book, passedValue).then(() => {
+        this.update_books()})
 
-        this.update_books();
-        console.log(this.state.books);
+    })
     }
 
+      
 
-    //this.setState({  });
 
 
   render() {
@@ -78,9 +78,9 @@ changeShelf(passedValue, id) {
           </div>
           <div className="list-books-content">
             <div>
-              <Bookshelf books={this.state.currentlyReading} title="Currently Reading" changeShelf={this.changeShelf} />
-              <Bookshelf books={this.state.wantToRead} title="Want to read" changeShelf={this.changeShelf}/>
-              <Bookshelf books={this.state.read} title="Read" changeShelf={this.changeShelf} />
+              <Bookshelf currentBooks={this.state.books} books={this.state.currentlyReading} title="Currently Reading" changeShelf={this.changeShelf} />
+              <Bookshelf currentBooks={this.state.books} books={this.state.wantToRead} title="Want to read" changeShelf={this.changeShelf}/>
+              <Bookshelf currentBooks={this.state.books} books={this.state.read} title="Read" changeShelf={this.changeShelf} />
             </div>
           </div>    
           <div className="open-search">
