@@ -9,15 +9,16 @@ export default class ShelfChanger extends React.Component {
     }
     
     render() {
+        console.log(this.props.shelf);
         return (
-
             <div className="book-shelf-changer">
             <select ref={(selectInput) => { this.selectInput = selectInput }} defaultValue={this.props.shelf} onChange={() => this.props.changeShelf(this.selectInput.value, this.props.id)}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading" >Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
-            </select>
+              <option value="none">None</option>
+              </select>
           </div>
 
         );

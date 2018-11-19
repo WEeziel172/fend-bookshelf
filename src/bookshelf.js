@@ -8,7 +8,7 @@ export default class Bookshelf extends React.Component {
 <div className="bookshelf">
 <h2 className="bookshelf-title">{this.props.title}</h2>
 <div className="bookshelf-books">
-    <Bookgrid books={this.props.books} shelf={this.props.books.shelf} changeShelf={this.props.changeShelf} />
+    <Bookgrid currentBooks={this.props.currentBooks} books={this.props.books} shelf={this.props.books.shelf} changeShelf={this.props.changeShelf} />
 </div>
 </div>
 
