@@ -54,14 +54,10 @@ update_books(){
     this.update_books();
   }
 
-changeShelf(passedValue, id) {
-    console.log(passedValue + id);
-
-    BooksApi.get(id).then((book) => {
+changeShelf(passedValue, book) {
       BooksApi.update(book, passedValue).then(() => {
         this.update_books()})
 
-    })
     }
 
       
@@ -91,7 +87,7 @@ changeShelf(passedValue, id) {
       )} />
   
                 <Route exact path="/search" component={() => (
-                    <Search currentBooks={this.state.books} changeShelf={this.changeShelf} />
+                    <Search books={this.state.books} changeShelf={this.changeShelf} />
                 )} />
 
           </div>
