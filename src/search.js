@@ -10,10 +10,9 @@ constructor(props) {
     super(props);
 
     this.state = {
-        currentBooks: this.props.currentBooks,
         value: '',
         newValue: '',
-        books: [],
+        books: this.props.books,
         newbooks: []
     }
     this.searchInput = this.searchInput.bind(this);
@@ -22,49 +21,33 @@ constructor(props) {
 searchInput(event){
     this.setState({
         value: event.target.value,
-        books: [],
         newbooks: []});
-    try {
 
-        if(event.target.value !== null && event.target.value !== undefined && event.target.value !== ''){
+        if(event.target.value){
         BooksApi.search(event.target.value).then((books) => {
-            if(books !== undefined || books !== 0) {
+            //console.log(books);
+            //console.log(this.state.books);
 
             books.map((newbook) => {
-                const foundbook = this.props.currentBooks.find(currBook => currBook.id === newbook.id);
-                if(foundbook !== undefined && foundbook !== null) {
-                    BooksApi.update(newbook.id,foundbook.shelf).then(
-                    BooksApi.get(newbook.id).then((book) => {
-                      
-                        this.setState({ newbooks: [...this.state.newbooks, book]});
-                     console.log("found match" + book);
-                     }))
-                 }
-                 else if(foundbook === undefined || foundbook === null) {
-                    BooksApi.update(newbook.id, 'none').then(
-                        BooksApi.get(newbook.id).then((book) => {
-                          
-                            this.setState({ newbooks: [...this.state.newbooks, book]});
-                         console.log("no match found for" + book);
-                         }))
-                }
-            }
-            );
-            this.setState({books})
-            }
-            else {
-                alert("Bad");
-            }
-        //console.log(books)
-        })
-    }
-    else if(event.target.value === undefined || event.target.value === null || event.target.value === '') {
-        this.setState({books: [], newbooks: []})
-         }
-}
+                const foundbook = this.state.books.find(currBook => currBook.id === newbook.id);
 
-    catch(err) {
-            alert("Bad");
+                if(foundbook) {
+                newbook.shelf = foundbook.shelf;
+                }
+                else {
+                    newbook.shelf = 'none';
+                }
+               
+                //console.log(newbook.shelf);
+                //console.log(newbook.id);
+            
+                this.setState({
+                    newbooks : [...this.state.newbooks, newbook]});
+
+            })
+            console.log(this.state.newbooks);
+        })
+
     }
 }
 render() {
@@ -78,7 +61,7 @@ render() {
               </div>
             </div>
             <div className="search-books-results">
-              <Bookgrid currentBooks={this.state.currentBooks} books={this.state.newbooks} changeShelf={this.props.changeShelf} />
+              <Bookgrid books={this.state.newbooks} changeShelf={this.props.changeShelf} />
             </div>
           </div>
 
