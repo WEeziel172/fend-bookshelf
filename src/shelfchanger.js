@@ -9,7 +9,7 @@ export default class ShelfChanger extends React.Component {
     }
     
     render() {
-        console.log(this.props.shelf);
+        //console.log(this.props.shelf);
         return (
             <div className="book-shelf-changer">
             <select ref={(selectInput) => { this.selectInput = selectInput }} defaultValue={this.props.shelf} onChange={() => this.props.changeShelf(this.selectInput.value, this.props.book)}>

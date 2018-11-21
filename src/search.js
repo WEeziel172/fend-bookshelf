@@ -23,11 +23,12 @@ searchInput(event){
         value: event.target.value,
         newbooks: []});
 
-        if(event.target.value){
+        if(event.target.value !== '') {
         BooksApi.search(event.target.value).then((books) => {
-            //console.log(books);
+            //console.log(this.state.value); 
             //console.log(this.state.books);
 
+            if(!books.error) {
             books.map((newbook) => {
                 const foundbook = this.state.books.find(currBook => currBook.id === newbook.id);
 
@@ -45,10 +46,10 @@ searchInput(event){
                     newbooks : [...this.state.newbooks, newbook]});
 
             })
-            console.log(this.state.newbooks);
-        })
+            //console.log(this.state.newbooks);
+         }})
 
-    }
+        }
 }
 render() {
     return (
